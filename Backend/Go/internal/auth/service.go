@@ -25,7 +25,7 @@ func (s *Service) Register(ctx context.Context, email, password string) error {
 }
 
 func (s *Service) Login(ctx context.Context, email, password string) (*User, error) {
-	user, err := s.repo.GetUserByEmail(ctx, email, password)
+	user, err := s.repo.GetUserByEmail(ctx, email)
 	if err != nil {
 		return nil, errors.New("invalid credentials")
 	}

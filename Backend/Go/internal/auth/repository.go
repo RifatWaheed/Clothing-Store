@@ -18,12 +18,18 @@ func (r *Repository) CreateUser(ctx context.Context, email, passwordHash string)
 	return err
 }
 
-func (r *Repository) GetUserByEmail(ctx context.Context, email, passwordHash string) (*User, error) {
-	row := r.DB.QueryRow(ctx, `SELECT id, email, password_hash, created_at FROM users WHERE email = $1`, email)
+func (r *Repository) GetUserByEmail(ctx context.Context, email string) (*User, error) {
+	row := r.DB.QueryRow(
+		ctx,
+		`SELECT id, email, password_hash, created_at FROM users WHERE email = $1`,
+		email,
+	)
+
 	user := User{}
 	err := row.Scan(&user.ID, &user.Email, &user.PasswordHash, &user.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
+
 	return &user, nil
 }
