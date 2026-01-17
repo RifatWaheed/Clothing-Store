@@ -33,3 +33,7 @@ func (r *Repository) GetUserByEmail(ctx context.Context, email string) (*User, e
 
 	return &user, nil
 }
+
+func (r *Repository) SendOTPToEmail(ctx context.Context, otp string, email string) {
+	// saveOTPandEmailInfoToDb()
+}

@@ -23,7 +23,8 @@ func SetupRouter(cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
 
 	authRoutes := r.Group("/api/auth")
 	{
-		authRoutes.POST("/register", authHandler.Register)
+		authRoutes.POST("/request-sendOTP", authHandler.SendOTP)
+		authRoutes.POST("/request-validateOTP", authHandler.ValidateOTP)
 		authRoutes.POST("/login", authHandler.Login)
 	}
 

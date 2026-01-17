@@ -1,62 +1,69 @@
 # Copilot Instructions for Clothing Store Backend
 
 ## Architecture Overview
-This is a Go backend using Gin web framework with PostgreSQL. Follows clean architecture with internal modules:
-- `auth/`: Handles user registration/login with JWT tokens
-- `config/`: Loads environment variables (DATABASE_URL, JWT_SECRET, SERVER_PORT)
-- `db/`: PostgreSQL connection pool using pgx/v5
-- `middleware/`: JWT authentication middleware
-- `router/`: Route setup with dependency injection
+Go backend using **Gin** web framework + **PostgreSQL**. Implements clean architecture with dependency injection:
+- **auth/**: User registration/login with JWT (HS256, context-extracted user_id)
+- **config/**: Environment variables via godotenv (DATABASE_URL, JWT_SECRET, SERVER_PORT)
+- **db/**: PostgreSQL pgx/v5 connection pool (initialized once in main)
+- **middleware/**: JWT validation with Bearer token parsing
+- **router/**: Route setup with dependency injection pattern
 
-Key pattern: Each module has Handler/Service/Repository layers. Services handle business logic, Repositories handle DB queries.
+**Key pattern**: Handler → Service → Repository layers. Services contain business logic (bcrypt hashing, validation), repositories execute SQL via pgx pool.
 
-## Dependencies & Setup
-- **Database**: PostgreSQL with migrations in `migrations/` using golang-migrate
-- **Auth**: JWT tokens (HS256, 24h expiry) with bcrypt password hashing
-- **Config**: Environment variables via godotenv (.env file optional)
+## Development Setup
+Required env vars (.env or shell):
+- `DATABASE_URL=postgres://user:pass@localhost:5432/clothing_store`
+- `JWT_SECRET=your_secret_key`
+- `SERVER_PORT=8080`
 
-Run migrations: `go run cmd/migrate/main.go up`
-
-## Build & Run Commands
+Commands:
+- **Migrations** (run once): `go run cmd/migrate/main.go up`
 - **Dev server**: `go run cmd/api/main.go`
-- **Build binary**: `go build -o api ./cmd/api`
-- **Docker**: `docker build -t clothing-store .` (exposes port 8080)
+- **Build**: `go build -o api ./cmd/api`
+- **Docker**: `docker build -t clothing-store .`
 
-Server starts on port from SERVER_PORT env var.
+## Request/Response Patterns
+Auth endpoints (no JWT required):
+- `POST /api/auth/register` → `{email, password}` → `{message}`
+- `POST /api/auth/login` → `{email, password}` → `{token}`
 
-## Authentication Patterns
-- **Register/Login**: POST /auth/register, /auth/login with JSON {email, password}
-- **Protected routes**: Use `middleware.JWTAuth(secret)` on route groups
-- **Token format**: Bearer <token> in Authorization header
-- **User context**: Middleware sets `user_id` in Gin context
+Protected routes: Apply `middleware.JWTAuth(cfg.JWTSecret)` to groups. Extract user_id via `c.GetString("user_id")`. Header format: `Authorization: Bearer <token>`
 
-Example handler:
+Handler template:
 ```go
-func (h *Handler) SomeProtected(c *gin.Context) {
-    userID := c.GetString("user_id")  // From middleware
-    // ... logic
+func (h *Handler) SomeRoute(c *gin.Context) {
+    userID := c.GetString("user_id")
+    var req struct{ Field string }
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "invalid"})
+        return
+    }
 }
 ```
 
-## Database Patterns
-- Use pgx pool for queries
-- Repository methods take context.Context
-- User model: {ID uuid, Email, PasswordHash, CreatedAt}
+## Database & Models
+Schema (migrations/000001_init.up.sql):
+- `users`: id UUID, email UNIQUE, password_hash, created_at
+- `products`: id UUID, name, price, created_at
 
-Example query:
+Query pattern in Repository:
 ```go
-row := r.DB.QueryRow(ctx, "SELECT id, email FROM users WHERE id = $1", userID)
+row := r.DB.QueryRow(ctx, "SELECT id, email FROM users WHERE email = $1", email)
+err := row.Scan(&user.ID, &user.Email, &user.PasswordHash, &user.CreatedAt)
 ```
 
+Services return errors; handlers translate to JSON responses with appropriate HTTP status codes.
+
 ## Code Conventions
-- Struct constructors: `NewXxx(deps) *Xxx`
-- Error handling: Return errors from services, handlers respond with JSON
-- Imports: Standard library first, then third-party, then internal
-- Module name: `clothing-store-backend`
+- **Constructors**: `NewXxx(deps) *Xxx` (e.g., `NewHandler(service)`)
+- **Context**: Pass `c.Request.Context()` to services/repos in handlers
+- **Imports**: stdlib → third-party → internal
+- **Error handling**: All DB calls use context.Context; errors propagate up through Service layer
+- **Module name**: `clothing-store-backend`
 
 ## Key Files
-- `cmd/api/main.go`: Entry point, wires dependencies
-- `internal/router/router.go`: Route setup with auth injection
-- `internal/auth/jwt.go`: Token generation/validation
-- `migrations/000001_init.up.sql`: Users and products tables</content>
+- `cmd/api/main.go`: Entry point, dependency wiring
+- `internal/router/router.go`: Route groups with auth middleware
+- `internal/auth/service.go`: Business logic (bcrypt, user lookup)
+- `migrations/000001_init.up.sql`: Schema with users + products</content>
 <parameter name="filePath">d:\Clothing Store\Clothing-Store\Backend\Go\.github\copilot-instructions.md
