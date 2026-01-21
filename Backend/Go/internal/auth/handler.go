@@ -1,8 +1,6 @@
 package auth
 
 import (
-	"crypto/rand"
-	"math/big"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,32 +31,15 @@ func (h *Handler) SendOTP(c *gin.Context) {
 		return
 	}
 
-	// otpLength := 6
-	// otp, err := generateAlphaNumericOTP(otpLength)
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate OTP"})
-	// 	return
-	// }
+	err := h.service.SendOTPToEmail(c.Request.Context(), req.Email)
 
-	// message, err := h.service.SendOTPToEmail(c.Request.Context(), otp, req.Email)
-
-}
-
-func generateAlphaNumericOTP(length int) (string, error) {
-	const charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-
-	otp := make([]byte, length)
-	for i := 0; i < length; i++ {
-		// get a secure random index
-		num, err := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
-		if err != nil {
-			return "", err
-		}
-
-		otp[i] = charset[num.Int64()]
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to send OTP"})
+		return
 	}
 
-	return string(otp), nil
+	c.JSON(http.StatusOK, gin.H{"message": "OTP sent successfully"})
+
 }
 
 /* ---------------- Validate - OTP ---------------- */

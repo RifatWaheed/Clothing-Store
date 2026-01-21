@@ -1,1 +1,38 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <!-- Logo -->
+  <div class="logo">YourBrand</div>
+
+  <!-- Menu -->
+  <ul class="nav-links">
+    <li>Men</li>
+    <li>Women</li>
+    <li>New Arrivals</li>
+    <li class="sale">Sale</li>
+    <li>About Us</li>
+    <li class="admin">Admin</li>
+  </ul>
+
+  <!-- Actions -->
+  <div class="actions">
+    <!-- Search -->
+    <div class="search" [class.open]="searchOpen">
+      <input type="text" placeholder="Search" />
+      <mat-icon (click)="toggleSearch()">search</mat-icon>
+    </div>
+
+    <mat-icon>favorite_border</mat-icon>
+    <mat-icon>shopping_cart</mat-icon>
+
+    <!-- Profile -->
+    <div class="avatar" [matMenuTriggerFor]="profileMenu">
+      <mat-icon>person</mat-icon>
+    </div>
+
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item>Login</button>
+      <button mat-menu-item>Sign Up</button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item>My Account</button>
+    </mat-menu>
+  </div>
+</nav>

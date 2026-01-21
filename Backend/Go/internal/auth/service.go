@@ -1,19 +1,24 @@
 package auth
 
 import (
+	"clothing-store-backend/internal/email"
 	"context"
 	"errors"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
-	// "golang.org/x/text/message"
 )
 
 type Service struct {
-	repo *Repository
+	repo        *Repository
+	emailSender email.EmailSender
 }
 
-func NewService(repo *Repository) *Service {
-	return &Service{repo: repo}
+func NewService(repo *Repository, emailSender email.EmailSender) *Service {
+	return &Service{
+		repo:        repo,
+		emailSender: emailSender,
+	}
 }
 
 func (s *Service) Register(ctx context.Context, email, password string) error {
@@ -44,8 +49,28 @@ func (s *Service) VerifyEmailExistence(ctx context.Context, email string) *User 
 	return user
 }
 
-func (s *Service) SendOTPToEmail(ctx context.Context, otp string, email string) (string, error) {
-	message := ""
-	// err := s.repo.SendOTPToEmail(ctx, otp, email)
-	return message, nil
+func (s *Service) SendOTPToEmail(ctx context.Context, email string) error {
+
+	otp, errorGenerateOTP := generateAlphaNumericOTP(6) // OTP length is currently 6
+	if errorGenerateOTP != nil {
+		return errorGenerateOTP
+	}
+
+	otpHash, err := hashOTP(otp)
+	if err != nil {
+		return err
+	}
+
+	expiresAt := time.Now().Add(10 * time.Minute)
+
+	if err := s.repo.CreateEmailVerification(ctx, email, otpHash, expiresAt); err != nil {
+		return err
+	}
+
+	return s.emailSender.Send(
+		ctx,
+		email,
+		"Your verification code",
+		"Your OTP is: "+otp,
+	)
 }

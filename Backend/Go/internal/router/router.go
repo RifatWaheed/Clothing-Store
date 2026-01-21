@@ -3,6 +3,7 @@ package router
 import (
 	"clothing-store-backend/internal/auth"
 	"clothing-store-backend/internal/config"
+	"clothing-store-backend/internal/email"
 	"clothing-store-backend/internal/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -16,9 +17,17 @@ func SetupRouter(cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
+	// ===== EMAIL SERVICE SETUP =====
+	var emailSender email.EmailSender
+	if cfg.SendGridAPIKey != "" {
+		emailSender = email.NewSendGridClient(cfg.SendGridAPIKey, cfg.SendGridFrom)
+	} else {
+		emailSender = email.NewMockEmailSender()
+	}
+
 	// ===== AUTH SETUP =====
 	authRepo := auth.NewRepository(dbPool)
-	authService := auth.NewService(authRepo)
+	authService := auth.NewService(authRepo, emailSender)
 	authHandler := auth.NewHandler(authService)
 
 	authRoutes := r.Group("/api/auth")

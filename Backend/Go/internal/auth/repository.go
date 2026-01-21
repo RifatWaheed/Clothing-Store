@@ -2,6 +2,8 @@ package auth
 
 import (
 	"context"
+	"time"
+
 	"github.com/jackc/pgx/v5/pgxpool" //A pool of reusable database connections for postgres
 )
 
@@ -32,6 +34,15 @@ func (r *Repository) GetUserByEmail(ctx context.Context, email string) (*User, e
 	}
 
 	return &user, nil
+}
+
+func (r *Repository) CreateEmailVerification(ctx context.Context, email string, otpHash string, expiresAt time.Time) error {
+	_, err := r.DB.Exec(ctx, `
+		INSERT INTO email_verifications (email, otp_hash, expires_at)
+		VALUES ($1, $2, $3)
+	`, email, otpHash, expiresAt)
+
+	return err
 }
 
 func (r *Repository) SendOTPToEmail(ctx context.Context, otp string, email string) {
