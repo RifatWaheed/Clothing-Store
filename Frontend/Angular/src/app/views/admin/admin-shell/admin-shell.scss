@@ -1,0 +1,155 @@
+:host {
+  --accent: #1F6F54; /* SAME as landing CTA */
+  --bg: #f6f6f6;
+  --card: #ffffff;
+  --text: #111111;
+  --muted: rgba(17, 17, 17, 0.62);
+  --border: rgba(0, 0, 0, 0.06);
+}
+
+/* Layout */
+.admin-shell {
+  height: 100vh;
+  background: var(--bg);
+}
+
+/* SIDEBAR */
+.admin-sidenav {
+  width: 280px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+}
+
+/* Brand */
+.sidebar-header {
+  padding: 18px 16px 14px;
+}
+
+.brand-title {
+  font-size: 18px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* NAV */
+.sidebar-nav {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* NAV ITEM */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+/* ICON — outlined by default */
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  font-size: 20px;
+  line-height: 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: 'Material Icons Outlined';
+  font-weight: normal;
+
+  color: var(--muted);
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+/* LABEL */
+.nav-label {
+  font-size: 14px;
+  color: var(--text);
+  letter-spacing: 0.1px;
+  transition: color 160ms ease;
+}
+
+/* HOVER */
+.nav-item:hover {
+  background: rgba(31, 111, 84, 0.06);
+  transform: translateX(2px);
+}
+
+.nav-item:hover .nav-icon {
+  color: var(--accent);
+}
+
+/* ACTIVE — filled icon + accent color */
+.nav-item.is-active {
+  background: rgba(31, 111, 84, 0.10);
+}
+
+.nav-item.is-active .nav-icon {
+  font-family: 'Material Icons';
+  color: var(--accent);
+  transform: scale(1.06);
+}
+
+.nav-item.is-active .nav-label {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* MAIN CONTENT */
+.admin-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* TOP BAR */
+.admin-topbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-topbar mat-icon {
+  color: var(--muted);
+}
+
+.topbar-title {
+  margin-left: 10px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.topbar-spacer {
+  flex: 1;
+}
+
+/* PAGE */
+.admin-page {
+  height: calc(100vh - 64px);
+  overflow: auto;
+  padding: 20px;
+}

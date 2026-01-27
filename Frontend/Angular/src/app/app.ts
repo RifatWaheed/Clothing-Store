@@ -6,7 +6,7 @@ import { GlobalFooter } from "./views/global-footer/global-footer";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Landing, GlobalFooter],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
