@@ -1,0 +1,61 @@
+.about {
+  background-color: #f8f6f3;
+  padding: 6rem 0;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 6rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+}
+
+/* Left */
+.about-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #1f3d2b;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.about-left h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  line-height: 1.2;
+  color: #222;
+}
+
+/* Right */
+.about-right p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 1.5rem;
+
+  /* Smooth future transition */
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Optional hover polish (lightweight) */
+.about-right p:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about-container {
+    grid-template-columns: 1fr;
+    padding: 0 2rem;
+  }
+
+  .about-left h2 {
+    font-size: 2rem;
+  }
+}

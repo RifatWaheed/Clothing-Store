@@ -36,3 +36,50 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+/* BUTTONS */
+.btn {
+  padding: 0.75rem 1.8rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid #1f3d2b;
+  min-width: 150px;
+
+  /* 3D effect base */
+  box-shadow: 1px 1px 3px #4a745a; /* fake "bottom" shadow */
+  transition: all 0.2s ease;
+  position: relative;
+  background-clip: padding-box;
+}
+
+/* PRIMARY BUTTON */
+.btn.primary {
+  background: #1f3d2b;
+  color: white;
+}
+
+.btn.primary:hover {
+  transform: translate(3px, -2px);
+  box-shadow: 1px 1px 3px #4a745a;
+  background: #1f3d2b;
+  color: white;
+}
+
+/* OUTLINE BUTTON */
+.btn.outline {
+  background: transparent;
+  color: #1f3d2b;
+}
+
+.btn.outline:hover {
+  transform: translate(3px, -2px);
+  box-shadow: 1px 1px 3px #4a745a;
+  background: #1f3d2b;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
