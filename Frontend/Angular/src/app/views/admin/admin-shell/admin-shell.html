@@ -1,11 +1,6 @@
 <mat-sidenav-container class="admin-shell">
-
   <!-- SIDEBAR -->
-  <mat-sidenav
-    class="admin-sidenav"
-    mode="side"
-    [opened]="sidenavOpen()">
-
+  <mat-sidenav class="admin-sidenav" mode="side" [opened]="sidenavOpen()">
     <!-- Brand -->
     <div class="sidebar-header">
       <div class="brand-title">YourBrand</div>
@@ -13,71 +8,65 @@
     </div>
 
     <nav class="sidebar-nav">
-
-      <a class="nav-item"
-         routerLink="/admin/admin-dashboard"
-         routerLinkActive="is-active"
-         [routerLinkActiveOptions]="{ exact: true }">
+      <a
+        class="nav-item"
+        routerLink="/admin/admin-dashboard"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <mat-icon class="nav-icon">dashboard</mat-icon>
         <span class="nav-label">Dashboard</span>
       </a>
 
-      <a class="nav-item"
-         routerLink="/admin/orders"
-         routerLinkActive="is-active">
+      <a class="nav-item" routerLink="/admin/orders" routerLinkActive="is-active">
         <mat-icon class="nav-icon">receipt_long</mat-icon>
         <span class="nav-label">Orders</span>
       </a>
 
-      <a class="nav-item"
-         routerLink="/admin/products"
-         routerLinkActive="is-active">
+      <a class="nav-item" routerLink="/admin/products" routerLinkActive="is-active">
         <mat-icon class="nav-icon">inventory_2</mat-icon>
         <span class="nav-label">Products</span>
       </a>
 
-      <a class="nav-item"
-         routerLink="/admin/inventory"
-         routerLinkActive="is-active">
+      <a class="nav-item" routerLink="/admin/inventory" routerLinkActive="is-active">
         <mat-icon class="nav-icon">warehouse</mat-icon>
         <span class="nav-label">Inventory</span>
       </a>
 
-      <a class="nav-item"
-         routerLink="/admin/customers"
-         routerLinkActive="is-active">
+      <a class="nav-item" routerLink="/admin/customers" routerLinkActive="is-active">
         <mat-icon class="nav-icon">group</mat-icon>
         <span class="nav-label">Customers</span>
       </a>
 
-      <a class="nav-item"
-         routerLink="/admin/promotions"
-         routerLinkActive="is-active">
+      <a class="nav-item" routerLink="/admin/promotions" routerLinkActive="is-active">
         <mat-icon class="nav-icon">local_offer</mat-icon>
         <span class="nav-label">Promotions</span>
       </a>
 
-      <a class="nav-item"
-         routerLink="/admin/content"
-         routerLinkActive="is-active">
+      <a class="nav-item" routerLink="/admin/content" routerLinkActive="is-active">
         <mat-icon class="nav-icon">view_quilt</mat-icon>
         <span class="nav-label">Content</span>
       </a>
 
-      <a class="nav-item"
-         routerLink="/admin/settings"
-         routerLinkActive="is-active">
+      <a class="nav-item" routerLink="/admin/settings" routerLinkActive="is-active">
         <mat-icon class="nav-icon">settings</mat-icon>
         <span class="nav-label">Settings</span>
       </a>
 
+      <a
+        class="nav-item"
+        routerLink="/"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon class="nav-icon">home</mat-icon>
+        <span class="nav-label">Home</span>
+      </a>
     </nav>
-
   </mat-sidenav>
 
   <!-- MAIN CONTENT -->
   <mat-sidenav-content class="admin-content">
-
     <!-- TOP BAR -->
     <mat-toolbar class="admin-topbar">
       <button mat-icon-button (click)="toggleSidenav()">
@@ -104,7 +93,5 @@
     <main class="admin-page">
       <router-outlet></router-outlet>
     </main>
-
   </mat-sidenav-content>
-
 </mat-sidenav-container>

@@ -1,1 +1,334 @@
-<p>products works!</p>
+<div class="products-container">
+  <!-- HEADER -->
+  <div class="products-header">
+    <div class="header-content">
+      <h1 class="page-title">Products</h1>
+      <p class="page-subtitle">Manage your product catalog</p>
+    </div>
+    <button class="btn-primary" aria-label="Add new product">
+      <mat-icon>add</mat-icon>
+      <span>Add Product</span>
+    </button>
+  </div>
+
+  <!-- FILTERS & SEARCH -->
+  <div class="filters-bar">
+    <div class="search-container">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search products by name, SKU, or category..."
+        aria-label="Search products"
+      />
+    </div>
+    
+    <div class="filter-controls">
+      <select class="filter-select" aria-label="Filter by category">
+        <option value="">All Categories</option>
+        <option value="mens">Men's</option>
+        <option value="womens">Women's</option>
+        <option value="kids">Kids</option>
+        <option value="accessories">Accessories</option>
+      </select>
+
+      <select class="filter-select" aria-label="Filter by stock status">
+        <option value="">All Stock</option>
+        <option value="in-stock">In Stock</option>
+        <option value="low-stock">Low Stock</option>
+        <option value="out-of-stock">Out of Stock</option>
+      </select>
+
+      <button class="btn-secondary" aria-label="Reset filters">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- PRODUCTS GRID -->
+  <div class="products-grid">
+    <!-- PRODUCT CARD 1 (Sample) -->
+    <div class="product-card">
+      <div class="product-image-wrapper">
+        <div class="product-image-placeholder">
+          <mat-icon>image</mat-icon>
+        </div>
+        <div class="product-badge stock-in">In Stock</div>
+        <div class="product-overlay">
+          <button class="overlay-btn view-btn" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button class="overlay-btn edit-btn" title="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="overlay-btn delete-btn" title="Delete Product">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="product-content">
+        <h3 class="product-name">Classic T-Shirt</h3>
+        <p class="product-sku">SKU: TSH-001-BLK</p>
+        
+        <div class="product-price-section">
+          <span class="price">$29.99</span>
+          <span class="original-price">$39.99</span>
+        </div>
+
+        <div class="product-info">
+          <div class="info-item">
+            <span class="info-label">Stock:</span>
+            <span class="info-value">245</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Category:</span>
+            <span class="info-value">Men's</span>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn primary">Edit</button>
+          <button class="action-btn danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CARD 2 (Low Stock) -->
+    <div class="product-card">
+      <div class="product-image-wrapper">
+        <div class="product-image-placeholder">
+          <mat-icon>image</mat-icon>
+        </div>
+        <div class="product-badge stock-low">Low Stock</div>
+        <div class="product-overlay">
+          <button class="overlay-btn view-btn" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button class="overlay-btn edit-btn" title="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="overlay-btn delete-btn" title="Delete Product">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="product-content">
+        <h3 class="product-name">Summer Dress</h3>
+        <p class="product-sku">SKU: DRS-002-BLU</p>
+        
+        <div class="product-price-section">
+          <span class="price">$49.99</span>
+        </div>
+
+        <div class="product-info">
+          <div class="info-item">
+            <span class="info-label">Stock:</span>
+            <span class="info-value warning">12</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Category:</span>
+            <span class="info-value">Women's</span>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn">Edit</button>
+          <button class="action-btn danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CARD 3 (Out of Stock) -->
+    <div class="product-card out-of-stock">
+      <div class="product-image-wrapper">
+        <div class="product-image-placeholder">
+          <mat-icon>image</mat-icon>
+        </div>
+        <div class="product-badge stock-out">Out of Stock</div>
+        <div class="product-overlay">
+          <button class="overlay-btn view-btn" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button class="overlay-btn edit-btn" title="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="overlay-btn delete-btn" title="Delete Product">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="product-content">
+        <h3 class="product-name">Winter Jacket</h3>
+        <p class="product-sku">SKU: JKT-003-BLK</p>
+        
+        <div class="product-price-section">
+          <span class="price">$89.99</span>
+        </div>
+
+        <div class="product-info">
+          <div class="info-item">
+            <span class="info-label">Stock:</span>
+            <span class="info-value danger">0</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Category:</span>
+            <span class="info-value">Men's</span>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn">Edit</button>
+          <button class="action-btn danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CARD 4 -->
+    <div class="product-card">
+      <div class="product-image-wrapper">
+        <div class="product-image-placeholder">
+          <mat-icon>image</mat-icon>
+        </div>
+        <div class="product-badge stock-in">In Stock</div>
+        <div class="product-overlay">
+          <button class="overlay-btn view-btn" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button class="overlay-btn edit-btn" title="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="overlay-btn delete-btn" title="Delete Product">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="product-content">
+        <h3 class="product-name">Denim Jeans</h3>
+        <p class="product-sku">SKU: JNS-004-BLU</p>
+        
+        <div class="product-price-section">
+          <span class="price">$59.99</span>
+        </div>
+
+        <div class="product-info">
+          <div class="info-item">
+            <span class="info-label">Stock:</span>
+            <span class="info-value">156</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Category:</span>
+            <span class="info-value">Women's</span>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn">Edit</button>
+          <button class="action-btn danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CARD 5 -->
+    <div class="product-card">
+      <div class="product-image-wrapper">
+        <div class="product-image-placeholder">
+          <mat-icon>image</mat-icon>
+        </div>
+        <div class="product-badge stock-in">In Stock</div>
+        <div class="product-overlay">
+          <button class="overlay-btn view-btn" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button class="overlay-btn edit-btn" title="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="overlay-btn delete-btn" title="Delete Product">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="product-content">
+        <h3 class="product-name">Sneakers</h3>
+        <p class="product-sku">SKU: SNK-005-GRY</p>
+        
+        <div class="product-price-section">
+          <span class="price">$79.99</span>
+        </div>
+
+        <div class="product-info">
+          <div class="info-item">
+            <span class="info-label">Stock:</span>
+            <span class="info-value">89</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Category:</span>
+            <span class="info-value">Accessories</span>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn">Edit</button>
+          <button class="action-btn danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT CARD 6 -->
+    <div class="product-card">
+      <div class="product-image-wrapper">
+        <div class="product-image-placeholder">
+          <mat-icon>image</mat-icon>
+        </div>
+        <div class="product-badge stock-in">In Stock</div>
+        <div class="product-overlay">
+          <button class="overlay-btn view-btn" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button class="overlay-btn edit-btn" title="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="overlay-btn delete-btn" title="Delete Product">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="product-content">
+        <h3 class="product-name">Baseball Cap</h3>
+        <p class="product-sku">SKU: CAP-006-RED</p>
+        
+        <div class="product-price-section">
+          <span class="price">$24.99</span>
+        </div>
+
+        <div class="product-info">
+          <div class="info-item">
+            <span class="info-label">Stock:</span>
+            <span class="info-value">320</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Category:</span>
+            <span class="info-value">Accessories</span>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn">Edit</button>
+          <button class="action-btn danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE (Optional) -->
+  <!-- <div class="empty-state">
+    <mat-icon class="empty-icon">inventory_2</mat-icon>
+    <h2>No products found</h2>
+    <p>Try adjusting your search or filters</p>
+  </div> -->
+</div>

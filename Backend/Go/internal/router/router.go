@@ -5,6 +5,7 @@ import (
 	"clothing-store-backend/internal/config"
 	"clothing-store-backend/internal/email"
 	"clothing-store-backend/internal/middleware"
+	"clothing-store-backend/internal/product"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -37,6 +38,18 @@ func SetupRouter(cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
 		authRoutes.POST("/login", authHandler.Login)
 	}
 
+	// ===== PRODUCT SETUP =====
+	productRepo := product.NewRepository(dbPool)
+	productService := product.NewService(productRepo)
+	productHandler := product.NewHandler(productService)
+
+	// ===== PUBLIC PRODUCT ROUTES (NO AUTH) =====
+	publicRoutes := r.Group("/api/public")
+	{
+		publicRoutes.GET("/products", productHandler.GetProductsPublic)
+		publicRoutes.GET("/products/:id", productHandler.GetProductByIDPublic)
+	}
+
 	// ===== JWT PROTECTED ROUTES =====
 
 	authMiddleware := middleware.JWTAuth(cfg.JWTSecret)
@@ -50,6 +63,15 @@ func SetupRouter(cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
 			userID := c.GetString("user_id")
 			c.JSON(200, gin.H{"user_id": userID})
 		})
+
+		// ===== PROTECTED PRODUCT ROUTES =====
+		products := protected.Group("/products")
+		{
+			// GET /api/products - List all products with pagination & search
+			products.GET("", productHandler.GetProducts)
+			// GET /api/products/:id - Get single product by ID
+			products.GET("/:id", productHandler.GetProductByID)
+		}
 	}
 
 	return r
