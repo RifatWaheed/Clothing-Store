@@ -1,0 +1,220 @@
+.auth-shell.single {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+
+  background:
+    radial-gradient(1100px 700px at 18% 12%, rgba(31, 61, 43, 0.16), transparent 58%),
+    radial-gradient(900px 650px at 78% 18%, rgba(31, 61, 43, 0.10), transparent 60%),
+    linear-gradient(180deg, #f8f6f3 0%, #fbfaf8 100%);
+}
+
+.auth-card {
+  width: min(480px, 100%);
+  border-radius: 22px;
+  border: 1px solid rgba(18, 18, 18, 0.10);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.10),
+    0 8px 22px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background:
+    radial-gradient(600px 200px at 20% 0%, rgba(255,255,255,0.55), transparent 60%),
+    radial-gradient(420px 220px at 90% 30%, rgba(31,61,43,0.10), transparent 55%);
+  pointer-events: none;
+}
+
+.auth-card > * {
+  position: relative;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+
+  .logo-dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #1f3d2b 0%, #2a5a3f 100%);
+    box-shadow:
+      0 14px 30px rgba(31, 61, 43, 0.28),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+
+  .brand-text {
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #121212;
+    }
+
+    p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: rgba(18, 18, 18, 0.62);
+    }
+  }
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+
+  label {
+    font-size: 13px;
+    color: rgba(18, 18, 18, 0.78);
+    letter-spacing: 0.2px;
+  }
+
+  input {
+    height: 48px;
+    border-radius: 14px;
+    border: 1px solid rgba(18, 18, 18, 0.10);
+    background: rgba(255, 255, 255, 0.86);
+    padding: 0 14px;
+    color: #121212;
+    outline: none;
+
+    transition:
+      box-shadow 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease,
+      background 180ms ease;
+
+    &::placeholder {
+      color: rgba(18, 18, 18, 0.42);
+    }
+
+    &:focus {
+      border-color: rgba(31, 61, 43, 0.45);
+      box-shadow: 0 0 0 5px rgba(31, 61, 43, 0.12);
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.92);
+    }
+  }
+
+  input.ng-invalid.ng-touched {
+    border-color: rgba(210, 55, 55, 0.45);
+    box-shadow: 0 0 0 5px rgba(210, 55, 55, 0.10);
+  }
+}
+
+.pw-wrap {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding-right: 84px;
+  }
+
+  .pw-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid rgba(18, 18, 18, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+    color: rgba(18, 18, 18, 0.70);
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 7px 10px;
+    cursor: pointer;
+
+    transition:
+      background 160ms ease,
+      transform 160ms ease,
+      box-shadow 160ms ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
+      transform: translateY(-52%);
+    }
+
+    &:active {
+      transform: translateY(-48%);
+    }
+  }
+}
+
+.error-msg {
+  color: rgba(210, 55, 55, 0.95);
+  font-size: 13px;
+  margin-top: -4px;
+}
+
+.btn.primary {
+  height: 48px;
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(31, 61, 43, 0.55);
+  background: linear-gradient(135deg, #1f3d2b 0%, #2a5a3f 100%);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+
+  box-shadow:
+    0 14px 34px rgba(31, 61, 43, 0.20),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 44px rgba(31, 61, 43, 0.24),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    filter: saturate(1.02);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow:
+      0 12px 28px rgba(31, 61, 43, 0.18),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  }
+}
+
+.foot {
+  margin: 10px 0 0;
+  text-align: center;
+  color: rgba(18, 18, 18, 0.70);
+  font-size: 13.5px;
+
+  a {
+    color: rgba(31, 61, 43, 0.96);
+    text-decoration: none;
+    font-weight: 700;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

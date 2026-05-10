@@ -1,0 +1,49 @@
+<div class="auth-shell single">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="logo-dot"></div>
+      <div class="brand-text">
+        <h1>Sign in</h1>
+        <p>Welcome back.</p>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="field">
+        <label>Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input
+            [type]="showPw() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <button type="button" class="pw-btn" (click)="showPw.set(!showPw())">
+            {{ showPw() ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </div>
+
+      @if (error()) {
+        <small class="error-msg">{{ error() }}</small>
+      }
+
+      <button class="btn primary" type="submit">Sign in</button>
+
+      <p class="foot">
+        Don't have an account?
+        <a routerLink="/auth/register">Create one</a>
+      </p>
+    </form>
+  </div>
+</div>

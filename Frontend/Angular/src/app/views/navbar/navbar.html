@@ -1,6 +1,8 @@
 <nav class="navbar">
   <!-- Logo -->
-  <div class="logo">YourBrand</div>
+  <div class="logo">
+    <a routerLink="/" routerLinkActive="active">YourBrand</a>
+  </div>
 
   <!-- Menu -->
   <ul class="nav-links">
@@ -9,11 +11,10 @@
     <li>New Arrivals</li>
     <li class="sale">Sale</li>
     <li>
-      <a routerLink="/about" routerLinkActive="active">About Us</a>
+      <a routerLink="/about-us" routerLinkActive="active">About Us</a>
     </li>
     <li class="admin">
       <a routerLink="/admin" routerLinkActive="active">Admin</a>
-
     </li>
   </ul>
 
@@ -34,8 +35,8 @@
     </div>
 
     <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item>Login</button>
-      <button mat-menu-item>Sign Up</button>
+      <button (click)="showLoginPage()" mat-menu-item>Login</button>
+      <button (click)="showSignUpPage()" mat-menu-item>Sign Up</button>
       <mat-divider></mat-divider>
       <button mat-menu-item>My Account</button>
     </mat-menu>

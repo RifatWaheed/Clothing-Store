@@ -1,0 +1,61 @@
+<div class="auth-shell single">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="logo-dot"></div>
+      <div class="brand-text">
+        <h1>Create account</h1>
+        <p>Join the store in minutes.</p>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="grid2">
+        <div class="field">
+          <label>Full name</label>
+          <input formControlName="fullName" placeholder="Your name" autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input
+            [type]="showPw() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+          />
+          <button type="button" class="pw-btn" (click)="showPw.set(!showPw())">
+            {{ showPw() ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Confirm password</label>
+        <input type="password" formControlName="confirmPassword" placeholder="••••••••" />
+        @if (passwordsMismatch && (form.touched || form.dirty)) {
+          <small class="hint" >
+          Passwords do not match.
+        </small>
+        }
+      </div>
+
+      <button class="btn primary" type="submit">Create account</button>
+
+      <p class="foot">
+        Already have an account?
+        <a routerLink="/auth/login">Sign in</a>
+      </p>
+    </form>
+  </div>
+</div>

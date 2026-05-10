@@ -7,20 +7,27 @@ import { AdminDashboard } from './views/admin/admin-dashboard/admin-dashboard';
 import { Orders } from './views/admin/orders/orders';
 import { Products } from './views/admin/products/products';
 import { Inventory } from './views/admin/inventory/inventory';
+import { Register } from './views/auth/register/register';
+import { Login } from './views/auth/login/login';
 
 export const routes: Routes = [
   {
     path: '',
     component: PublicLayout,
-    children: [{ path: '', component: Landing }],
+    children: [
+      { path: '', component: Landing },
+      { path: 'about-us', component: AboutUs },
+      { path: 'auth/register', component: Register },
+      { path: 'auth/login', component: Login },
+    ],
   },
-  { path: 'about-us', component: AboutUs },
+
 
   {
     path: 'admin',
     component: AdminShell,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      { path: '', pathMatch: 'full', redirectTo: 'admin-dashboard' },
       { path: 'admin-dashboard', component: AdminDashboard },
       { path: 'orders', component: Orders },
       { path: 'products', component: Products },
