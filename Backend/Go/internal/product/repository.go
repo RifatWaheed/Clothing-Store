@@ -2,6 +2,7 @@ package product
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -14,47 +15,35 @@ func NewRepository(db *pgxpool.Pool) *Repository {
 	return &Repository{DB: db}
 }
 
-// GetProducts retrieves a paginated list of products with optional search filtering
 func (r *Repository) GetProducts(ctx context.Context, limit, offset int, search string) ([]Product, int64, error) {
-	// Build the query with optional search filter
-	baseQuery := `
-		SELECT 
-			pkid, name, created_by, modified_by, created_date, modified_date,
-			description, price, discount_amount, discount_percent,
-			sku_id, sku_code, color_id, color_name, gender_id, gender_name,
-			size_id, size_name, stock_id, stock_qty, type_id, type_name,
-			voucher_id, voucher_code
-		FROM products
-		WHERE 1=1
-	`
-
 	args := []interface{}{}
-	argIndex := 1
+	argIdx := 1
 
-	// Apply search filter if provided
+	whereClause := " WHERE 1=1"
 	if search != "" {
-		baseQuery += ` AND (name ILIKE $` + string(rune(argIndex)) + ` OR description ILIKE $` + string(rune(argIndex)) + `)`
+		whereClause += fmt.Sprintf(" AND (name ILIKE $%d OR description ILIKE $%d)", argIdx, argIdx)
 		args = append(args, "%"+search+"%")
-		argIndex++
-	}
-
-	// Count total records with filter
-	countQuery := `SELECT COUNT(*) FROM products WHERE 1=1`
-	if search != "" {
-		countQuery += ` AND (name ILIKE $1 OR description ILIKE $1)`
+		argIdx++
 	}
 
 	var total int64
-	err := r.DB.QueryRow(ctx, countQuery, args[:len(args)-1]...).Scan(&total)
+	err := r.DB.QueryRow(ctx, "SELECT COUNT(*) FROM products"+whereClause, args...).Scan(&total)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	// Apply ordering and pagination
-	baseQuery += ` ORDER BY created_date DESC LIMIT $` + string(rune(argIndex)) + ` OFFSET $` + string(rune(argIndex+1))
+	listQuery := `SELECT
+		pkid, name, created_by, modified_by, created_date, modified_date,
+		description, price, discount_amount, discount_percent,
+		sku_id, sku_code, color_id, color_name, gender_id, gender_name,
+		size_id, size_name, stock_id, stock_qty, type_id, type_name,
+		voucher_id, voucher_code
+		FROM products` +
+		whereClause +
+		fmt.Sprintf(" ORDER BY created_date DESC LIMIT $%d OFFSET $%d", argIdx, argIdx+1)
 	args = append(args, limit, offset)
 
-	rows, err := r.DB.Query(ctx, baseQuery, args...)
+	rows, err := r.DB.Query(ctx, listQuery, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -83,10 +72,9 @@ func (r *Repository) GetProducts(ctx context.Context, limit, offset int, search 
 	return products, total, nil
 }
 
-// GetProductByID retrieves a single product by PKID
 func (r *Repository) GetProductByID(ctx context.Context, pkid int64) (*Product, error) {
 	query := `
-		SELECT 
+		SELECT
 			pkid, name, created_by, modified_by, created_date, modified_date,
 			description, price, discount_amount, discount_percent,
 			sku_id, sku_code, color_id, color_name, gender_id, gender_name,
@@ -104,7 +92,6 @@ func (r *Repository) GetProductByID(ctx context.Context, pkid int64) (*Product, 
 		&p.SizeId, &p.SizeName, &p.StockId, &p.StockQty, &p.TypeId, &p.TypeName,
 		&p.VoucherId, &p.VoucherCode,
 	)
-
 	if err != nil {
 		return nil, err
 	}

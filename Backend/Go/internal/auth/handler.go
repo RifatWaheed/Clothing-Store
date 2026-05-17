@@ -45,14 +45,21 @@ func (h *Handler) SendOTP(c *gin.Context) {
 /* ---------------- Validate - OTP ---------------- */
 func (h *Handler) ValidateOTP(c *gin.Context) {
 	var req struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
+		Email string `json:"email"`
+		OTP   string `json:"otp"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
 		return
 	}
+
+	if err := h.service.ValidateOTP(c.Request.Context(), req.Email, req.OTP); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "OTP verified successfully"})
 }
 
 /* ---------------- REGISTER ---------------- */
@@ -61,6 +68,7 @@ func (h *Handler) Register(c *gin.Context) {
 	var req struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
+		Name     string `json:"name"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -68,8 +76,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	err := h.service.Register(c.Request.Context(), req.Email, req.Password)
-	if err != nil {
+	if err := h.service.Register(c.Request.Context(), req.Email, req.Password, req.Name); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -96,11 +103,11 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := GenerateToken(user.ID)
+	token, err := GenerateToken(user.ID, user.Role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "token generation failed"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.JSON(http.StatusOK, gin.H{"token": token, "role": user.Role})
 }

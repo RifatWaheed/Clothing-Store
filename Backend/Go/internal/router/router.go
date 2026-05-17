@@ -1,6 +1,8 @@
 package router
 
 import (
+	"context"
+
 	"clothing-store-backend/internal/auth"
 	"clothing-store-backend/internal/config"
 	"clothing-store-backend/internal/email"
@@ -11,7 +13,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func SetupRouter(cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
+func SetupRouter(ctx context.Context, cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
 	r := gin.Default()
 
 	r.GET("/health", func(c *gin.Context) {
@@ -20,14 +22,15 @@ func SetupRouter(cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
 
 	// ===== EMAIL SERVICE SETUP =====
 	var emailSender email.EmailSender
-	if cfg.SendGridAPIKey != "" {
-		emailSender = email.NewSendGridClient(cfg.SendGridAPIKey, cfg.SendGridFrom)
+	if cfg.ResendAPIKey != "" {
+		emailSender = email.NewResendClient(cfg.ResendAPIKey, cfg.ResendFromEmail)
 	} else {
 		emailSender = email.NewMockEmailSender()
 	}
 
 	// ===== AUTH SETUP =====
 	authRepo := auth.NewRepository(dbPool)
+	auth.StartOTPCleanup(ctx, authRepo)
 	authService := auth.NewService(authRepo, emailSender)
 	authHandler := auth.NewHandler(authService)
 
@@ -35,6 +38,7 @@ func SetupRouter(cfg *config.Config, dbPool *pgxpool.Pool) *gin.Engine {
 	{
 		authRoutes.POST("/request-sendOTP", authHandler.SendOTP)
 		authRoutes.POST("/request-validateOTP", authHandler.ValidateOTP)
+		authRoutes.POST("/register", authHandler.Register)
 		authRoutes.POST("/login", authHandler.Login)
 	}
 

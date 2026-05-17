@@ -9,6 +9,7 @@ import { Products } from './views/admin/products/products';
 import { Inventory } from './views/admin/inventory/inventory';
 import { Register } from './views/auth/register/register';
 import { Login } from './views/auth/login/login';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminShell,
+    canActivate: [adminGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'admin-dashboard' },
       { path: 'admin-dashboard', component: AdminDashboard },

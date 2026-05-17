@@ -29,7 +29,7 @@
             autocomplete="current-password"
           />
           <button type="button" class="pw-btn" (click)="showPw.set(!showPw())">
-            {{ showPw() ? 'Hide' : 'Show' }}
+            <mat-icon>{{ showPw() ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
         </div>
       </div>

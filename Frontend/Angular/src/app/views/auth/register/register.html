@@ -3,59 +3,77 @@
     <div class="brand">
       <div class="logo-dot"></div>
       <div class="brand-text">
-        <h1>Create account</h1>
-        <p>Join the store in minutes.</p>
+        @if (step() === 1) { <h1>Create account</h1><p>Join the store in minutes.</p> }
+        @if (step() === 2) { <h1>Check your email</h1><p>Enter the code we sent to {{ verifiedEmail }}.</p> }
+        @if (step() === 3) { <h1>Almost there</h1><p>Set your name and password.</p> }
       </div>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
-      <div class="grid2">
-        <div class="field">
-          <label>Full name</label>
-          <input formControlName="fullName" placeholder="Your name" autocomplete="name" />
-        </div>
+    <!-- Step indicator -->
+    <div class="steps">
+      <div class="step" [class.active]="step() >= 1" [class.done]="step() > 1"></div>
+      <div class="step" [class.active]="step() >= 2" [class.done]="step() > 2"></div>
+      <div class="step" [class.active]="step() >= 3"></div>
+    </div>
 
+    @if (error()) {
+      <small class="error-msg">{{ error() }}</small>
+    }
+
+    <!-- STEP 1 — Email -->
+    @if (step() === 1) {
+      <form [formGroup]="emailForm" (ngSubmit)="submitEmail()" class="form">
         <div class="field">
           <label>Email</label>
-          <input
-            type="email"
-            formControlName="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-          />
+          <input type="email" formControlName="email" placeholder="you@example.com" autocomplete="email" />
         </div>
-      </div>
+        <button class="btn primary" type="submit">Send verification code</button>
+        <p class="foot">Already have an account? <a routerLink="/auth/login">Sign in</a></p>
+      </form>
+    }
 
-      <div class="field">
-        <label>Password</label>
-        <div class="pw-wrap">
-          <input
-            [type]="showPw() ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="••••••••"
-          />
-          <button type="button" class="pw-btn" (click)="showPw.set(!showPw())">
-            {{ showPw() ? 'Hide' : 'Show' }}
-          </button>
+    <!-- STEP 2 — OTP -->
+    @if (step() === 2) {
+      <form [formGroup]="otpForm" (ngSubmit)="submitOTP()" class="form">
+        <div class="field">
+          <label>Verification code</label>
+          <input class="otp-input" formControlName="otp" placeholder="ABC123" autocomplete="one-time-code" maxlength="6" />
         </div>
-      </div>
+        <button class="btn primary" type="submit">Verify code</button>
+        <p class="foot"><a (click)="step.set(1)" style="cursor:pointer">← Change email</a></p>
+      </form>
+    }
 
-      <div class="field">
-        <label>Confirm password</label>
-        <input type="password" formControlName="confirmPassword" placeholder="••••••••" />
-        @if (passwordsMismatch && (form.touched || form.dirty)) {
-          <small class="hint" >
-          Passwords do not match.
-        </small>
-        }
-      </div>
+    <!-- STEP 3 — Name + Password -->
+    @if (step() === 3) {
+      <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" class="form">
+        <div class="field">
+          <label>Full name</label>
+          <input formControlName="name" placeholder="Your name" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input
+              [type]="showPw() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+            />
+            <button type="button" class="pw-btn" (click)="showPw.set(!showPw())">
+              <mat-icon>{{ showPw() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm password</label>
+          <input type="password" formControlName="confirmPassword" placeholder="••••••••" />
+          @if (passwordsMismatch && (registerForm.touched || registerForm.dirty)) {
+            <small class="hint">Passwords do not match.</small>
+          }
+        </div>
+        <button class="btn primary" type="submit">Create account</button>
+      </form>
+    }
 
-      <button class="btn primary" type="submit">Create account</button>
-
-      <p class="foot">
-        Already have an account?
-        <a routerLink="/auth/login">Sign in</a>
-      </p>
-    </form>
   </div>
 </div>
